@@ -6,30 +6,51 @@
 
 using namespace std;
 
-Component getComponent(int cId){
+Component readComponent(int cId){
+	if(cId<0) throw Component::invalidId();
+
 	int id,delivery,price;
 	string name,reader;
+
+	ifstream file{"files/components_info.dat"}; //apro il file
 	
-	ifstream file{"components_info.dat"}; //apro il file
-	id=file.get()-48; //leggo l'id della prima riga
+	if(!file) throw Component::invalidId(); //file valido?
 	
-	while(id!=cId){
+	getline(file,reader);
+	
+	file>>reader;
+	id=reader.at(1)-48; //leggo l'id
+	while(id!=cId && file){
 		getline(file,reader); //passo alla riga successiva e leggo l'id finche non trovo quello richiesto
-		id=file.get()-48;
+		file>>reader;
+		id=reader.at(1)-48; 
 	}
+		
+	if(!file) throw Component::invalidId();
 	
-	file>>name;
+	//leggo i dati del componente
 	file>>reader;
-	delivery=stoi(reader);
+	name=reader.substr(1,reader.size()-2);
 	file>>reader;
-	price=stoi(reader);
+	delivery=stoi(reader.substr(1,reader.size()-2));
+	file>>reader;
+	price=stoi(reader.substr(1,reader.size()-2));
 	file.close();
-	
+
 	return Component{id,name,delivery,price};
 }
 
+void readAll(){
+	string s;
+	ifstream f{"files/components_info.dat"};
+	while(f){
+		getline(f,s);
+		cout<<s;
+	}
+}
+
 int main(){
-	getComponent(2).print();
-	getComponent(6).print();
+	Component c=readComponent(8);
+	c.print();
 	return 0;
 }

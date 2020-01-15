@@ -1,3 +1,5 @@
+//Pagotto Francesco 1195886
+
 #include "Component.h"
 
 using namespace std;
@@ -11,7 +13,7 @@ void Component::print(){ //stampa componente
 	cout<<"\tName: "<<component_name<<"\n";
 	cout<<"\tDelivery time: "<<delivery_time<<"\n";
 	cout<<"\tPrice: "<<component_price<<" euro\n\n";
-	
+
 }
 
 int Component::getComponent_id(){return component_id;} //ritorna l'id del componente
