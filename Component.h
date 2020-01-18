@@ -5,25 +5,26 @@
 using namespace std;
 
 class Component{
-		
 	public:
 		class invalidId{}; //id errato
-		class invalidDeliveryTime{}; //delivery_time errato
-		class invalidPrice{}; //prezzo errato
 		
-		Component();
-		Component(int id,string name,int time,int price); //costruttore
-		
-		void print(); //stampa componente
+		Component(); //costruttore
+		Component(int); //costruttore
 		
 		int getComponent_id(); //ritorna l'id del componente
 		string getComponent_name(); //ritorna il nome del componente
 		int getDelivery_time(); //ritorna il tempo di spedizione del componente
-		int getComponent_price(); //ritorna il prezzo del componente
+		double getComponent_price1(); //ritorna il prezzo1 del componente 1-10
+		double getComponent_price2(); //ritorna il prezzo2 del componente 11-50
+		double getComponent_price3(); //ritorna il prezzo3 del componente 51+
+		
+		void print(); //stampa componente
 		
 	private:
 		int component_id; //id del componente
 		string component_name; //nome del componente
 		int delivery_time; //tempo di spedizione
-		int component_price; //prezzo del componente
+		double component_price1; //prezzo1 del componente 1-10
+		double component_price2; //prezzo2 del componente 11-50
+		double component_price3; //prezzo3 del componente 51+
 };
