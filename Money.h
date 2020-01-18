@@ -3,9 +3,10 @@
 class Money{
 	public:
 		class notEnoughMoney{};
+		class invalidQuantity{};
 		
 		Money();
-		Money(int); //soldi iniziali
+		Money(double); //soldi iniziali
 		
 		double getMoney(); //ritorna quanti fondi sono disponibili
 		

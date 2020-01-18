@@ -8,8 +8,9 @@ class Component{
 	public:
 		class invalidId{}; //id errato
 		
-		Component(); //costruttore
-		Component(int); //costruttore
+		Component(); //costruttori
+		Component(int);
+		Component(int,string,int,double,double,double);
 		
 		int getComponent_id(); //ritorna l'id del componente
 		string getComponent_name(); //ritorna il nome del componente

@@ -3,10 +3,10 @@
 #include <fstream>
 #include "Component.h"
 
-Component::Component():component_id{-1},component_name{""},delivery_time{-1},component_price1{-1},component_price2{-1},component_price3{-1}{} //costruttore
+Component::Component():component_id{-1},component_name{""},delivery_time{-1},component_price1{-1},component_price2{-1},component_price3{-1}{} //costruttori
 
-Component::Component(int id){ //costruttore
-	if(id<0) throw Component::invalidId();
+Component::Component(int id){
+	if(id<0 || id>9) throw Component::invalidId();
 
 	string reader;
 	ifstream file{"files/components_info.dat"}; //apro il file
@@ -40,6 +40,8 @@ Component::Component(int id){ //costruttore
 	
 	file.close();
 }
+
+Component::Component(int id,string name,int time,double price1,double price2,double price3):component_id{id},component_name{name},delivery_time{time},component_price1{price1},component_price2{price2},component_price3{price3}{}
 
 void Component::print(){ //stampa componente
 	cout<<"Component "<<component_id<<":\n\n";
