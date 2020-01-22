@@ -11,7 +11,7 @@ Money::Money(double m):money{m}{}
 
 double Money::getMoney(){return money;}
 
-void Money::buyComponent(int id,int quantity){
+bool Money::buyComponent(int id,int quantity){
 	if(id<0) throw Component::invalidId();
 	if(quantity<1) throw invalidQuantity();
 	
@@ -27,11 +27,15 @@ void Money::buyComponent(int id,int quantity){
 	if(totPrice>money) throw notEnoughMoney();
 	
 	money-=totPrice;
+	
+	return true;
 }
 
-void Money::sellModel(int id,int quantity){
+bool Money::sellModel(int id,int quantity){
 	if(id<0) throw Model::invalid_id();
 	if(quantity<1) throw invalidQuantity();
 	
 	//money+=Model{id}.getPrice()*quantity;
+	
+	return true;
 }
