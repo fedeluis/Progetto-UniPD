@@ -27,90 +27,69 @@ int main(int argc, char const *argv[])
     bool first_row = true; //differenzia lettura righe
 
     /* legge e stampa ogni riga */
-    while(1) {
+    
+   while(1) {
         res=fgets(buf, 100, fd);
         if( res==NULL )
             break;
-        if(first_row) {
-            //ricavo id e name
-            bool id_found = false;
-            bool name_found = false;
-            for(int i=0; i<100; i++) {
-                if(!id_found && buf[i]=='[') {
+        
+        //variabili di controllo e parametri
+        bool found1 = false;
+        bool found2 = false;
+        bool found3 = false;
+        int id, qnt;
+        string name;
+
+        for(int i=0; i<100; i++) {
+            if(!found1 && buf[i]=='[') {
+                i++;
+                string tmp = "";
+                while(buf[i]!=']') {
+                    tmp += buf[i];
                     i++;
-                    string tmp = "";
-                    while(buf[i]!=']') {
-                        tmp += buf[i];
-                        i++;
-                    }
-                    //inserisco id
+                }
+                //salvo id modello o componente
+                if(first_row)
                     mod.set_id(stoi(tmp));  // stoi: converte stringa in intero
-                    id_found = true;        // ho trovato id
-                }
-                if(!name_found && buf[i]=='[') {
-                    i++;
-                    string tmp = "";
-                    while(buf[i]!=']') {
-                        tmp += buf[i];
-                        i++;
-                    }
-                    //inserisco id
-                    mod.set_name(tmp);  //inserisco nome
-                    name_found = true;    // ho trovato id
-                }
+                else
+                    id = stoi(tmp);
+                found1 = true; // ho trovato id
             }
-            first_row = false;
-        }
-        else {
-            //variabili di controllo e parametri
-            bool id_found = false;
-            bool name_found = false;
-            bool qnt_found = false;
-            int id, qnt;
-            string name;
-
-            for(int i=0; i<100; i++) {
-                if(!id_found && buf[i]=='[') {
+            if(!found2 && buf[i]=='[') {
+                i++;
+                string tmp = "";
+                while(buf[i]!=']') {
+                    tmp += buf[i];
                     i++;
-                    string tmp = "";
-                    while(buf[i]!=']') {
-                        tmp += buf[i];
-                        i++;
-                    }
-                    //salvo id
-                    id = stoi(tmp);  // stoi: converte stringa in intero
-                    id_found = true; // ho trovato id
                 }
-                if(!name_found && buf[i]=='[') {
-                    i++;
-                    string tmp = "";
-                    while(buf[i]!=']') {
-                        tmp += buf[i];
-                        i++;
-                    }
-                    //salvo name
+                //salvo name modello o componenete
+                if(first_row)
+                    mod.set_name(tmp);
+                else
                     name = tmp;
-                    name_found = true; // ho trovato name
-                }
-                if(!qnt_found && buf[i]=='[') {
-                    i++;
-                    string tmp = "";
-                    while(buf[i]!=']') {
-                        tmp += buf[i];
-                        i++;
-                    }
-                    //salvo qnt
-                    qnt = stoi(tmp);  // stoi: converte stringa in intero
-                    qnt_found = true; // ho trovato id
-                }
+                found2 = true; // ho trovato name
             }
-            mod.add_component(id,name,qnt);
+            if(!found3 && buf[i]=='[') {
+                i++;
+                string tmp = "";
+                while(buf[i]!=']') {
+                    tmp += buf[i];
+                    i++;
+                }
+                if(first_row)   //inserisco prezzo
+                    mod.set_price(stod(tmp));   // stod: converte stringa in double
+                else    //salvo qnt
+                    qnt = stoi(tmp);  // stoi: converte stringa in intero
+                found3 = true; // ho trovato id
+            }
         }
+        if(first_row)   //dopo una lettura first_row=false
+            first_row = false;
+        else
+            mod.add_component(id,name,qnt);
     }
-
     /* chiude il file */
     fclose(fd);
-    cout << "id: " << mod.get_m_id() << "\nname: " << mod.get_m_name() << endl;
-    cout << mod.print_component();
+    mod.print_component();
     return 0;
 }

@@ -5,10 +5,10 @@
 
 //costruttori
 Model::Model()
-    :id{-1}, name{""}, comp{}
+    :id{-1}, name{""}, comp{}, price{-1}
     {}
-Model::Model(int mid, string mname)
-    :id{mid}, name{mname}, comp{}
+Model::Model(int mid, string mname, double mprice)
+    :id{mid}, name{mname}, comp{}, price{mprice}
     {}
 //distruttore
 Model::~Model() {
@@ -32,11 +32,19 @@ void Model::add_component(int cid, string cname, int q) {
     //aggiungo in coda
     comp.push_back(n);
 }
+void Model::set_price(double mprice) {
+    if(mprice<0)
+        throw invalid_price();
+    this->price = mprice;
+}
 int Model::get_m_id() {
     return this->id;
 }
 string Model::get_m_name() {
     return this->name;
+}
+double Model::get_m_price() {
+    return this->price;
 }
 int Model::get_c_id(int index) {
     if(index>=comp.size() || comp.empty())
@@ -92,13 +100,12 @@ int Model::get_c_qnt(int index) {
 
     return output.qnt;
 }
-string Model::print_component() {
-    string output = "Componenti:\n";
+void Model::print_component() {
+    cout << "Descrizione elettrodomestico..\nid: [" << id << "]\tnome: '" << name << "'\tprezzo: " << price << "$\nLista componeneti:\n";
     for(int i=0; i<comp.size(); i++) {
-        output = output + "id: " + to_string(comp.front().c_id) + ", name: " + comp.front().c_name + ", quantita': " + to_string(comp.front().qnt) + "\n";
-        component tmp = comp.front();
-        comp.push_back(tmp);
+        cout << "id: [" << comp.front().c_id << "]\t nome: '" + comp.front().c_name << "'\t quantita': [" << comp.front().qnt << "]\n";
+        comp.push_back(comp.front());
         comp.pop_front();
     }
-    return output;
+    cout << endl;
 }

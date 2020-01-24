@@ -4,14 +4,6 @@
 #include "System.h"
 
 using namespace std;
-/**
- * 
- * WARNING
- * 
- * CONTROLLO INPUT NON FATTO !!!
- * 
- * 
- */
 
 //costruttore
 System::System()
@@ -24,11 +16,15 @@ System::~System() {
     m_done.clear();
 }
 void System::add_c_shop(int cid, int mon, int qnt) {
-    shop_done new_c = {cid,mon,qnt};    //componenete da aggiungere alla lista ordini
+    if(cid<0)
+        throw invalid_id();
+    if(mon<0)
+        throw invalid_month();
+    if(qnt<1)
+        throw invalid_qnt();
     
-    /**
-     * CODICE DA MIGLIORARE!
-     */
+    shop_done new_c = {cid,mon,qnt};    //componenete da aggiungere alla lista ordini
+
     int count = 0;
     while(c_ord.front().component_id < cid) {   //metto in coda tutti i componenti che arrivano prima
         c_ord.push_back(c_ord.front());
@@ -43,9 +39,10 @@ void System::add_c_shop(int cid, int mon, int qnt) {
     }
 }
 void System::add_c_stock(int cid, int qnt) {
-    /**
-     * CODICE DA MIGLIORARE!
-     */
+    if(cid<0)
+        throw invalid_id();
+    if(qnt<1)
+        throw invalid_qnt();
 
     int size = c_stock.size();  //salvo grandezza lista
 
@@ -64,15 +61,17 @@ void System::add_c_stock(int cid, int qnt) {
     c_stock.push_back(stk);
 }
 void System::add_m_sold(string mname, int qnt) {
+    if(mname.compare("") == 0)
+        throw invalid_name();
+    if(qnt<1)
+        throw invalid_qnt();
+
     order_sold osold = {mname,qnt};
     m_done.push_back(osold);
 }
 void System::add_month() {
     int size = c_ord.size();
 
-    /**
-     * CODICE DA MIGLIORARE!
-     */
     while(size>0) {
         c_ord.front().month--;
         
@@ -86,6 +85,11 @@ void System::add_month() {
     }
 }
 bool System::catch_from_stock(int cid, int qnt) {
+    if(cid<0)
+        throw invalid_id();
+    if(qnt<1)
+        throw invalid_qnt();
+    
     int size = c_stock.size();
 
     //cerco il componente necessario
@@ -127,7 +131,7 @@ void System::print_current_status() {
     cout << "\nElettrodomestici spediti:\n";
     size = m_done.size();
     while(size>0) {
-        cout << "nome: [" << m_done.front().model_name << "]\tquantita': [" << m_done.front().quantity << "]" << endl;
+        cout << "nome: '" << m_done.front().model_name << "'\tquantita': [" << m_done.front().quantity << "]" << endl;
         m_done.push_back(m_done.front());
         m_done.pop_front();
         size--;

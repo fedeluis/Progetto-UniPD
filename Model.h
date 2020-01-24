@@ -24,7 +24,7 @@ class Model {
          * costruttore con parametri
          * in: (id,name,price)
          */
-        Model(int,string,int);
+        Model(int,string,double);
         /**
          * distruttore
          */
