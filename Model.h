@@ -21,9 +21,9 @@ class Model {
         Model();
         /**
          * costruttore con parametri
-         * in: (id,name)
+         * in: (id,name,price)
          */
-        Model(int,string);
+        Model(int,string,int);
         /**
          * distruttore
          */
@@ -44,11 +44,17 @@ class Model {
          */
         void add_component(int,string,int);
         /**
+         * funzione che aggiunge prezzo all'elettrodomestico
+         * in: (price)
+         */
+        void set_price(double);
+        /**
          * funzioni get model
          * in: non servono parametri
          */
         int get_m_id();
         string get_m_name();
+        double get_m_price();
         /**
          * funzioni get component
          * in: index lista
@@ -74,5 +80,6 @@ class Model {
         int id;
         string name;
         list<component> comp;    //lista componenti
+        double price;
         //  http://www.cplusplus.com/reference/list/list/
 };
