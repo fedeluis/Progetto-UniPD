@@ -46,8 +46,10 @@ class System {
          */
         void add_month();
         /**
-         * toglie i componenti necessari alla produzione dallo stock
+         * toglie i componenti necessari alla produzione dal magazzino
+         * e ritorna la disponibilita' del magazzino
          * in: (component_id, quantity)
+         * out: bool
          */
         bool catch_from_stock(int, int);
         /**
