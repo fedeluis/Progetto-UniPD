@@ -64,9 +64,9 @@ class Model {
         string get_c_name(int);
         int get_c_qnt(int);
         /**
-         * ritorna una stringa con tutte le specifiche dei componenti
+         * stampa tutte le specifiche dei componenti
          */
-        string print_component();
+        void print_component();
 
         //lista di componenti
         typedef struct {
