@@ -9,8 +9,8 @@ class Component{
 		class invalidId{}; //id errato
 		
 		Component(); //costruttori
-		Component(int);
-		Component(int,string,int,double,double,double);
+		Component(int); //id
+		Component(int,string,int,double,double,double); //id name delivery_time price1 price2 price3
 		
 		int getComponent_id(); //ritorna l'id del componente
 		string getComponent_name(); //ritorna il nome del componente
