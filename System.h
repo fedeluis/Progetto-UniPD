@@ -11,11 +11,19 @@ class System {
         /**
          * errori
          */
-        class no_such_component{};
+        class no_such_component{};  //non vi sono abbastanza componenti
+        class invalid_id{};     //id errato
+        class invalid_name{};   //name errato
+        class invalid_qnt{};    //quantita' errata
+        class invalid_month{};  //mese errato
         /**
          * costruttore
          */
         System();
+        /**
+         * distruttore
+         */
+        virtual ~System();
         /**
          * inserisce nuovi componenti ordinati
          * ordinamento in base al mese
@@ -41,7 +49,7 @@ class System {
          * toglie i componenti necessari alla produzione dallo stock
          * in: (component_id, quantity)
          */
-        void catch_from_stock(int, int);
+        bool catch_from_stock(int, int);
         /**
          * stampa lo stato corrente quando un ordine e' evaso
          * out: (c_ord, c_stock, m_done)

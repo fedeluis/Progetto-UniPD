@@ -12,7 +12,6 @@ Model::Model(int mid, string mname)
     {}
 //distruttore
 Model::~Model() {
-
     comp.clear();
 }
 void Model::set_id(int mid) {

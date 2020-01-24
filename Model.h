@@ -62,7 +62,7 @@ class Model {
         string print_component();
 
         //lista di componenti
-        typedef struct cm {
+        typedef struct {
 
             int c_id;
             string c_name;
