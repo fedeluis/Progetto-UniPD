@@ -15,6 +15,7 @@ class Model {
         class invalid_name{};   //name errato
         class invalid_qnt{};    //quantita' errata
         class invalid_index{};  //indice errato
+        class invalid_price{};  //prezzo errato
         /**
          * costruttore di default
          */
