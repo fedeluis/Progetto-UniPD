@@ -9,7 +9,7 @@ Money::Money(double m):money{m}{}
 
 double Money::getMoney(){return money;}
 
-bool Money::buyComponent(Component c,int quantity){
+bool Money::buyComponent(Component& c,int quantity){
 	if(quantity<1) throw invalidQuantity();
 	double price,totPrice;
 	
@@ -26,7 +26,7 @@ bool Money::buyComponent(Component c,int quantity){
 	return true;
 }
 
-bool Money::sellModel(Model m,int quantity){
+bool Money::sellModel(Model& m,int quantity){
 	if(quantity<1) throw invalidQuantity();
 	
 	money+=m.get_m_price()*quantity;
