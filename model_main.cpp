@@ -40,7 +40,6 @@ list<Model> scan_files() {
                 }
                 //salvo nome in vettore
                 nomi.push_back(tmp);
-                cout << tmp <<endl; // PROVA OUTPUT PER TESTING
             }
         }
     }
@@ -133,8 +132,6 @@ list<Model> scan_files() {
 
         //inserisco nella lista modello letto
         output.push_back(mod);
-        cout << "numero " << index << endl; // PROVA OUTPUT PER TESTING
-        mod.print_component();  // PROVA OUTPUT PER TESTING
     }
 
     return output;
