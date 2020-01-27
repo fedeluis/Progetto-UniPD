@@ -100,6 +100,9 @@ int Model::get_c_qnt(int index) {
 
     return output.qnt;
 }
+int Model::get_num_c() {
+    return comp.size();
+}
 void Model::print_component() {
     cout << "Descrizione elettrodomestico..\nid: [" << id << "]\tnome: '" << name << "'\tprezzo: " << price << "$\nLista componeneti:\n";
     for(int i=0; i<comp.size(); i++) {

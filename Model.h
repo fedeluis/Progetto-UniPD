@@ -63,6 +63,10 @@ class Model {
         string get_c_name(int);
         int get_c_qnt(int);
         /**
+         * funzione che ritorna numero di componenti
+         */
+        int get_num_c();
+        /**
          * stampa tutte le specifiche dei componenti
          */
         void print_component();
