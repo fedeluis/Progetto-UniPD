@@ -1,6 +1,6 @@
 //Pagotto Francesco 1195886
 
-#include "Component.cpp"
+#include "Component.h"
 #include "Model.cpp"
 
 class Money{
