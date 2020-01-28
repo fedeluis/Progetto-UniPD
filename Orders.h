@@ -16,7 +16,7 @@ class Orders
 		    void set_quantity(int quantity);
 		    int get_ts();
 		    int get_id();
-		    string print_order();
+			int get_quantity();
     private:
     	    int time_stamp;
     	    int model_id;

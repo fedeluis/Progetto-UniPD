@@ -16,27 +16,30 @@ Component::Component(int id){
 	getline(file,reader);
 	
 	file>>reader;
-	component_id=reader.at(1)-48; //leggo l'id
+	component_id=stoi(reader); //leggo l'id
 	
 	while(component_id!=id && file){
 		getline(file,reader); //passo alla riga successiva e leggo l'id finche non trovo quello richiesto
 		file>>reader;
-		component_id=reader.at(1)-48; 
+		component_id=stoi(reader); 
 	}
 		
 	if(!file) throw Component::invalidId();
 	
 	//leggo i dati del componente
+	file>>component_name;
+	
 	file>>reader;
-	component_name=reader.substr(1,reader.size()-2);
+	delivery_time=stoi(reader);
+	
 	file>>reader;
-	delivery_time=stoi(reader.substr(1,reader.size()-2));
+	component_price1=stod(reader);
+	
 	file>>reader;
-	component_price1=stod(reader.substr(1,reader.size()-2));
+	component_price2=stod(reader);
+	
 	file>>reader;
-	component_price2=stod(reader.substr(1,reader.size()-2));
-	file>>reader;
-	component_price3=stod(reader.substr(1,reader.size()-2));
+	component_price3=stod(reader);
 	
 	file.close();
 }

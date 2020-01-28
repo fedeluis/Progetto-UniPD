@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Orders.h"
 
 using namespace std;
 
@@ -33,13 +34,42 @@ void set_quantity(int qt)
 	 thorw InvalidQuantityException();
 	this->quantity=qt;		
 }
-int get_ts()
+int Orders:: get_ts()
 {
 	return this->time_stamp;
 }
-int get_id()
+int Orders:: get_id()
 {
 
 	return this->model_id;
 }
+
+int Orders::get_quantity()
+{
+	return this.quantity;
+}
+
+void LoadOrder()
+{
+	string reader;
+	ifstream file{ "files/orders.dat" }; //apro il file
+
+	if (!file) throw Component::invalidId(); //file valido?
+	while (getline(file, reader))
+		file >> reader;
+	component_id = reader.at(1) - 48; //leggo l'id
+
+	//leggo le informazioni riguardanti l'ordine
+	file >> reader;
+	Ord.set_ts = reader.substr(1, reader.size() - 2);
+	file >> reader;
+	Ord.set_id = stoi(reader.substr(1, reader.size() - 2));
+	file >> reader;
+	= stod(reader.substr(1, reader.size() - 2));
+	file >> reader;
+	Ord.set_quantity = stod(reader.substr(1, reader.size() - 2));
+	file >> reader;
+	file.close();
+}
+
 

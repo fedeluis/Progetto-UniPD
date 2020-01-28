@@ -1,11 +1,11 @@
 *info sui componenti*
-[0] [alimentatore] [3] [50] [30] [20]
-[1] [motore] [3] [150] [100] [80]
-[2] [cestello] [1] [30] [25] [20]
-[3] [tubo] [2] [10] [8] [5]
-[4] [bulloni] [1] [0.5] [0.3] [0.2]
-[5] [evaporatore] [4] [70] [50] [40]
-[6] [vassoio] [1] [10] [8] [5]
-[7] [vetro] [2] [5] [3] [2]
-[8] [ferro] [1] [10] [8] [5]
-[9] [pvc] [1] [3] [1] [0.5]
+0 alimentatore 3 50 30 20
+1 motore 3 150 100 80
+2 cestello 1 30 25 20
+3 tubo 2 10 8 5
+4 bulloni 1 0.5 0.3 0.2
+5 evaporatore 4 70 50 40
+6 vassoio 1 10 8 5
+7 vetro 2 5 3 2
+8 ferro 1 10 8 5
+9 pvc 1 3 1 0.5

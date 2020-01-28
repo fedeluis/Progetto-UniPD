@@ -1,11 +1,12 @@
-#include "Money.cpp"
+//Pagotto Francesco 1195886
+
+#include "Money.h"
 
 int main(){
 	Money m{5000};
 	cout<<m.getMoney();
-	m.buyComponent(2,13);
-	cout<<m.getMoney();
-	m.sellModel(3,5);
+	Component c{3};
+	m.buyComponent(c,13);
 	cout<<m.getMoney();
 	return 0;
 }
