@@ -1,5 +1,4 @@
 // Federico Luisetto    1187521
-#include <iostream>
 #include <fstream>
 #include <vector>
 #include "Model.h"
@@ -12,39 +11,21 @@ list<Model> scan_files() {
     /**
      * lettura file
      */
-    FILE *fd;
-    char buf1[50];  //buffer per models.dat
-    char buf[100];  //buffer per modelli
-    char *res;
+    string reader;
+    ifstream file{"files/models.dat"}; //apre il file models.dat
+	
+    if(!file) 
+        throw Model::invalid_file();
 
-
-	//apre il file models.dat
-    fd=fopen("files/models.dat", "r");
-    if( fd==NULL ) {
-        perror("Errore in apertura del file");
-        exit(1);
-    }
     //legge ogni riga e la salva
-    while(1) {
-        res=fgets(buf1, 50, fd);
-        if( res==NULL )
-            break;
+    do {
+        file>>reader;
+        nomi.push_back("files/"+reader);
+        getline(file,reader);
+    } while(file);
 
-        for(int i=0; i<50; i++) {
-            if(buf1[i]=='[') {
-                i++;
-                string tmp = "files/";
-                while(buf1[i]!=']') {
-                    tmp += buf1[i];
-                    i++;
-                }
-                //salvo nome in vettore
-                nomi.push_back(tmp);
-            }
-        }
-    }
     // chiude il file models.dat
-    fclose(fd);
+    file.close();
 
 
     /**
@@ -52,83 +33,52 @@ list<Model> scan_files() {
      */
     for(int index=0; index<nomi.size(); index++) {
         Model mod;
+        int id, qnt;    //componente
+        string name;    //componente
         /**
         * lettura file
         */
+        ifstream file{nomi[index]}; //apre il file salvato in nomi[]
 
-	    // apre il file di indice index
-        fd=fopen(nomi[index].c_str(), "r"); // <string>.c_str() converte stringa in const char*
-        if( fd==NULL ) {
-            perror("Errore in apertura del file");
-            exit(1);
-        }
+        if(!file)
+            throw Model::invalid_file();
 
         bool first_row = true; //differenzia lettura righe
 
         /* legge e stampa ogni riga */
     
-        while(1) {
-            res=fgets(buf, 100, fd);
-            if( res==NULL )
-                break;
-        
-            //variabili di controllo e parametri
-            bool found1 = false;
-            bool found2 = false;
-            bool found3 = false;
-            int id, qnt;
-            string name;
+        do {
+            //id
+            file>>reader;
+            if(first_row)
+                mod.set_id(stoi(reader));
+            else
+                id = stoi(reader);
+            
+            //name
+            file>>reader;
+            if(first_row)
+                mod.set_name(reader);
+            else
+                name = reader;
 
-            for(int i=0; i<100; i++) {
-                if(!found1 && buf[i]=='[') {
-                    i++;
-                    string tmp = "";
-                    while(buf[i]!=']') {
-                        tmp += buf[i];
-                        i++;
-                    }
-                    //salvo id modello o componente
-                    if(first_row)
-                        mod.set_id(stoi(tmp));  // stoi: converte stringa in intero
-                    else
-                        id = stoi(tmp);
-                    found1 = true; // ho trovato id
-                }
-                if(!found2 && buf[i]=='[') {
-                    i++;
-                    string tmp = "";
-                    while(buf[i]!=']') {
-                        tmp += buf[i];
-                        i++;
-                    }
-                    //salvo name modello o componenete
-                    if(first_row)
-                        mod.set_name(tmp);
-                    else
-                        name = tmp;
-                    found2 = true; // ho trovato name
-                }
-                if(!found3 && buf[i]=='[') {
-                    i++;
-                    string tmp = "";
-                    while(buf[i]!=']') {
-                        tmp += buf[i];
-                        i++;
-                    }
-                    if(first_row)   //inserisco prezzo
-                        mod.set_price(stod(tmp));   // stod: converte stringa in double
-                    else    //salvo qnt
-                        qnt = stoi(tmp);  // stoi: converte stringa in intero
-                    found3 = true; // ho trovato id
-                }
-            }
+            //price or quantity needed
+            file>>reader;
+            if(first_row)
+                mod.set_price(stoi(reader));
+            else
+                qnt = stoi(reader);
+            
             if(first_row)   //dopo una lettura first_row=false
                 first_row = false;
-            else
+            else    //da seconda riga inserisco componenti
                 mod.add_component(id,name,qnt);
-        }
+
+            getline(file,reader);
+        } while(file);
+
         // chiudo il file di indice index
-        fclose(fd);
+        file.close();
 
         //inserisco nella lista modello letto
         output.push_back(mod);

@@ -15,6 +15,7 @@ class Model {
         class invalid_qnt{};    //quantita' errata
         class invalid_index{};  //indice errato
         class invalid_price{};  //prezzo errato
+        class invalid_file{};   //file in apertura non valido
         /**
          * costruttore di default
          */
