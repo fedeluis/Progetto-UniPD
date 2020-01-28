@@ -19,7 +19,6 @@ public:
 	};
 	Orders();
 	Orders(int TS, int id, int quantity);
-	void add_order(int ts, int id, int quantity);
 	void set_ts(int ts);
 	void set_id(int id);
 	void set_quantity(int quantity);

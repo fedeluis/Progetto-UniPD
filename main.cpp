@@ -8,8 +8,99 @@
 #include "Component.h"
 using namespace std;
 
+//soldi che abbiamo all'inizio
+extern double init_money;
+
+//funzione che legge i componenti
+list<Component> scan_comp_file() {
+	list<Component> output; //contiene tutti i componenti
+	
+	/**
+	 * lettura file
+	 */
+	string reader;
+	ifstream file{"files/components_info.dat"};	//apre file components_info.dat
+
+	if(!file) 
+        throw Component::invalidFile();
+	
+    //legge ogni riga e la salva
+    do {
+		int id, del_time;
+		double cp1, cp2, cp3;
+		string name;
+
+		//id
+        file>>reader;
+		id = stoi(reader);
+		//name
+        file>>reader;
+		name = reader;
+		//delivery time
+        file>>reader;
+		del_time = stoi(reader);
+		//price 1
+        file>>reader;
+		cp1 = stod(reader);
+		//price 2
+        file>>reader;
+		cp2 = stod(reader);
+		//price 3
+        file>>reader;
+		cp3 = stod(reader);
+		
+		Component tmp {id,name,del_time,cp1,cp2,cp3};
+		output.push_back(tmp);
+
+    } while(file);
+
+    // chiude il file models.dat
+    file.close();
+
+	return output;
+}
+//funzione per leggere ordini
+list<Orders> scan_ord_file() {
+	list<Orders> output; //contiene tutti gli ordini
+	
+	/**
+	 * lettura file
+	 */
+	string reader;
+	ifstream file{"files/orders.dat"};	//apre file orders.dat
+
+	if(!file) 
+        throw Orders::InvalidFiles();
+
+	//leggo soldi iniziali
+	file>>reader;
+	init_money = stoi(reader);
+	
+    //legge ogni riga e la salva
+    do {
+		Orders tmp;	//ordine temporaneo da salvare in lista
+		getline(file,reader);
+
+		//time_stamp
+        file>>reader;
+		tmp.set_ts(stoi(reader));
+		//time_stamp
+        file>>reader;
+		tmp.set_id(stoi(reader));
+		//time_stamp
+        file>>reader;
+		tmp.set_quantity(stoi(reader));
+		
+		output.push_back(tmp);	//salvo ordine in lista
+    } while(file);
+
+    // chiude il file models.dat
+    file.close();
+
+	return output;
+}
 //funzione per leggere model
-list<Model> scan_files() {
+list<Model> scan_model_files() {
     list<Model> output; //contiene tutti gli elettrodomestici
     vector<string> nomi;    //contiene nomi file
     /**
@@ -143,26 +234,45 @@ void OrdsByMonth(list<Component> &comp, const int size)
 	}
 	delete vet;
 }
+//metodo che cerca se ci sono ordini che arrivano
+list<Orders> SearchForArrivedOrders(int ts,const list<Orders> listOrders)
+{
+	
+}
 
 int main()
 {
 	System sy;
-	Money mon;
+	//salvadanaio aziendale
+	Money mon{init_money};
 	//serve per indicare il modello che stiamo considerando
 	Model currentModel;
-	//lista degli ordini che si stanno preocessando
+	//lista degli ordini che si stanno processando
 	list<Orders> OrdersInProcess;
-	list<Orders> NewOrders;
-	list<Component> allComponents;
+	//lsita degli ordini da processare
+	list<Orders> OrdersToProcess;
+	//lista di tutti gli ordini, man mano che vengono processati verranno rimossi da questa lista
+	list<Orders> NewOrders = scan_ord_file();
+	//lista contenente tutti i componenti
+	list<Component> allComponents = scan_comp_file();
+	//lista contenente i componenti utili ad un ordine
 	list<Component> components;
-	list<Model> models = scan_files();
+	//lista contenente tutti gli elettrodomestici
+	list<Model> models = scan_model_files();
+	//Rappresenta il componente su cui stiamo lavorando al momento
 	Component currentComponent;
-	Orders temp;
-	int length;
-	bool completo = false;
-	int c;
+	//numero di componenti per l'ordine
+	int componentLength;
+	//contatore
+	int count;
+	//quantità di elettrodomestici
 	int modelquantity;
+	//quantita di componenti
 	int componentquantity;
+	//contatore di mesi
+	int monthcount=0;
+	//numero di ordini in arrivo
+	int ArrivingOrdersCount;
 	while (NewOrders.size > 0)
 	{
 		std::cout << "ordine 1\n";
@@ -175,9 +285,9 @@ int main()
 		}
 		modelquantity = OrdersInProcess.back().get_quantity();
 		componentquantity = currentModel.get_c_qnt(components.front().getComponent_id());
-		length = components.size();
-		OrdsByMonth(components, length);
-		for (int i = 0; i < length; i++)
+		componentLength = components.size();
+		OrdsByMonth(components, componentLength);
+		for (int i = 0; i < componentLength; i++)
 		{
 			try
 			{
@@ -190,26 +300,28 @@ int main()
 
 			sy.add_c_shop(components.front().getComponent_id, modelquantity * componentquantity, components.front().getDelivery_time());
 			sy.add_month();
+			if(SearchForArrivedOrders(monthcount,NewOrders).size()==0)
+			{
+			
+			}
 			components.push_back(components.front());
 			components.pop_front();
 		}
 
-		c = 0;
+		count = 0;
 
 		//aspetto che i componenti siano tutti arrivati in magazzino
-		while (c < length)
+		while (count < componentLength)
 		{
 			if (sy.catch_from_stock(components.front().getComponent_id(), modelquantity * componentquantity))
-			{
-				//completo=true;
-				c++;
+		    {
+				count++;
 				components.push_back(components.front());
 				components.pop_front();
 			}
 			else
 			{
 				sy.add_month();
-				// completo=false;
 			}
 		}
 		//aspetto il time stamp e dopo posso dire di aver completato il primo ordine

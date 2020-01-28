@@ -7,6 +7,7 @@ using namespace std;
 class Component{
 	public:
 		class invalidId{}; //id errato
+		class invalidFile{}; //nome file errato
 		
 		Component(); //costruttori
 		Component(int); //id
