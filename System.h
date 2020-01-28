@@ -1,6 +1,5 @@
 // Federico Luisetto    1187521
 #include <iostream>
-#include <string>
 #include <list>
 
 using namespace std;

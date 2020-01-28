@@ -1,6 +1,4 @@
-//Federico Luisetto 1187521
-#include <iostream>
-#include <string>
+// Federico Luisetto    1187521
 #include "System.h"
 
 using namespace std;
