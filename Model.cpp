@@ -1,6 +1,4 @@
 // Federico Luisetto    1187521
-#include <iostream>
-#include <string>
 #include "Model.h"
 
 //costruttori
