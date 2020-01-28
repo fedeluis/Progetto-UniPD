@@ -90,7 +90,7 @@ list<Model> scan_files() {
 
     return output;
 }
-
+//scrolla gli ordini
 Orders ScrollOrders(list<Orders> &NewOrders)
 {
 	Orders ord;
@@ -98,6 +98,7 @@ Orders ScrollOrders(list<Orders> &NewOrders)
 	NewOrders.pop_front();
 	return ord;
 }
+//cerca i componenti in base all'id
 Component SearchComponentById(int id, list<Component> comp)
 {
 	for (int i = 0; comp.front().getComponent_id != id && i < comp.size; i++)
@@ -107,7 +108,7 @@ Component SearchComponentById(int id, list<Component> comp)
 	}
 	return comp.front();
 }
-
+//cerca un modello in base all'id
 Model SearchModelById(int id, list<Model> mod)
 {
 	int size = mod.size();
@@ -118,6 +119,7 @@ Model SearchModelById(int id, list<Model> mod)
 	}
 	return mod.front();
 }
+//ordina i componenti in modo decrescente in base al mese
 void OrdsByMonth(list<Component> &comp, const int size)
 {
 	Component *vet = new Component[size];
@@ -141,14 +143,14 @@ void OrdsByMonth(list<Component> &comp, const int size)
 	}
 	delete vet;
 }
-bool HasArrived(Component comp)
-{
-}
+
 int main()
 {
 	System sy;
 	Money mon;
+	//serve per indicare il modello che stiamo considerando
 	Model currentModel;
+	//lista degli ordini che si stanno preocessando
 	list<Orders> OrdersInProcess;
 	list<Orders> NewOrders;
 	list<Component> allComponents;
