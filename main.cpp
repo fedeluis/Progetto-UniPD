@@ -1,3 +1,4 @@
+//Alessandro Leonardi 1188704
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -12,174 +13,181 @@ using namespace std;
 extern double init_money;
 
 //funzione che legge i componenti
-list<Component> scan_comp_file() {
+list<Component> scan_comp_file()
+{
 	list<Component> output; //contiene tutti i componenti
-	
+
 	/**
 	 * lettura file
 	 */
 	string reader;
-	ifstream file{"files/components_info.dat"};	//apre file components_info.dat
+	ifstream file{"files/components_info.dat"}; //apre file components_info.dat
 
-	if(!file) 
-        throw Component::invalidFile();
-	
-    //legge ogni riga e la salva
-    do {
+	if (!file)
+		throw Component::invalidFile();
+
+	//legge ogni riga e la salva
+	do
+	{
 		int id, del_time;
 		double cp1, cp2, cp3;
 		string name;
 
 		//id
-        file>>reader;
+		file >> reader;
 		id = stoi(reader);
 		//name
-        file>>reader;
+		file >> reader;
 		name = reader;
 		//delivery time
-        file>>reader;
+		file >> reader;
 		del_time = stoi(reader);
 		//price 1
-        file>>reader;
+		file >> reader;
 		cp1 = stod(reader);
 		//price 2
-        file>>reader;
+		file >> reader;
 		cp2 = stod(reader);
 		//price 3
-        file>>reader;
+		file >> reader;
 		cp3 = stod(reader);
-		
-		Component tmp {id,name,del_time,cp1,cp2,cp3};
+
+		Component tmp{id, name, del_time, cp1, cp2, cp3};
 		output.push_back(tmp);
 
-    } while(file);
+	} while (file);
 
-    // chiude il file models.dat
-    file.close();
+	// chiude il file models.dat
+	file.close();
 
 	return output;
 }
 //funzione per leggere ordini
-list<Orders> scan_ord_file() {
+list<Orders> scan_ord_file()
+{
 	list<Orders> output; //contiene tutti gli ordini
-	
+
 	/**
 	 * lettura file
 	 */
 	string reader;
-	ifstream file{"files/orders.dat"};	//apre file orders.dat
+	ifstream file{"files/orders.dat"}; //apre file orders.dat
 
-	if(!file) 
-        throw Orders::InvalidFiles();
+	if (!file)
+		throw Orders::InvalidFiles();
 
 	//leggo soldi iniziali
-	file>>reader;
+	file >> reader;
 	init_money = stoi(reader);
-	
-    //legge ogni riga e la salva
-    do {
-		Orders tmp;	//ordine temporaneo da salvare in lista
-		getline(file,reader);
+
+	//legge ogni riga e la salva
+	do
+	{
+		Orders tmp; //ordine temporaneo da salvare in lista
+		getline(file, reader);
 
 		//time_stamp
-        file>>reader;
+		file >> reader;
 		tmp.set_ts(stoi(reader));
 		//time_stamp
-        file>>reader;
+		file >> reader;
 		tmp.set_id(stoi(reader));
 		//time_stamp
-        file>>reader;
+		file >> reader;
 		tmp.set_quantity(stoi(reader));
-		
-		output.push_back(tmp);	//salvo ordine in lista
-    } while(file);
 
-    // chiude il file models.dat
-    file.close();
+		output.push_back(tmp); //salvo ordine in lista
+	} while (file);
+
+	// chiude il file models.dat
+	file.close();
 
 	return output;
 }
 //funzione per leggere model
-list<Model> scan_model_files() {
-    list<Model> output; //contiene tutti gli elettrodomestici
-    vector<string> nomi;    //contiene nomi file
-    /**
+list<Model> scan_model_files()
+{
+	list<Model> output;  //contiene tutti gli elettrodomestici
+	vector<string> nomi; //contiene nomi file
+	/**
      * lettura file
      */
-    string reader;
-    ifstream file{"files/models.dat"}; //apre il file models.dat
-	
-    if(!file) 
-        throw Model::invalid_file();
+	string reader;
+	ifstream file{"files/models.dat"}; //apre il file models.dat
 
-    //legge ogni riga e la salva
-    do {
-        file>>reader;
-        nomi.push_back("files/"+reader);
-        getline(file,reader);
-    } while(file);
+	if (!file)
+		throw Model::invalid_file();
 
-    // chiude il file models.dat
-    file.close();
+	//legge ogni riga e la salva
+	do
+	{
+		file >> reader;
+		nomi.push_back("files/" + reader);
+		getline(file, reader);
+	} while (file);
 
+	// chiude il file models.dat
+	file.close();
 
-    /**
+	/**
      * leggo ed inserisco modelli
      */
-    for(int index=0; index<nomi.size(); index++) {
-        Model mod;
-        int id, qnt;    //componente
-        string name;    //componente
-        /**
+	for (int index = 0; index < nomi.size(); index++)
+	{
+		Model mod;
+		int id, qnt; //componente
+		string name; //componente
+		/**
         * lettura file
         */
-        ifstream file{nomi[index]}; //apre il file salvato in nomi[]
+		ifstream file{nomi[index]}; //apre il file salvato in nomi[]
 
-        if(!file)
-            throw Model::invalid_file();
+		if (!file)
+			throw Model::invalid_file();
 
-        bool first_row = true; //differenzia lettura righe
+		bool first_row = true; //differenzia lettura righe
 
-        /* legge e stampa ogni riga */
-    
-        do {
-            //id
-            file>>reader;
-            if(first_row)
-                mod.set_id(stoi(reader));
-            else
-                id = stoi(reader);
-            
-            //name
-            file>>reader;
-            if(first_row)
-                mod.set_name(reader);
-            else
-                name = reader;
+		/* legge e stampa ogni riga */
 
-            //price or quantity needed
-            file>>reader;
-            if(first_row)
-                mod.set_price(stoi(reader));
-            else
-                qnt = stoi(reader);
-            
-            if(first_row)   //dopo una lettura first_row=false
-                first_row = false;
-            else    //da seconda riga inserisco componenti
-                mod.add_component(id,name,qnt);
+		do
+		{
+			//id
+			file >> reader;
+			if (first_row)
+				mod.set_id(stoi(reader));
+			else
+				id = stoi(reader);
 
-            getline(file,reader);
-        } while(file);
+			//name
+			file >> reader;
+			if (first_row)
+				mod.set_name(reader);
+			else
+				name = reader;
 
-        // chiudo il file di indice index
-        file.close();
+			//price or quantity needed
+			file >> reader;
+			if (first_row)
+				mod.set_price(stoi(reader));
+			else
+				qnt = stoi(reader);
 
-        //inserisco nella lista modello letto
-        output.push_back(mod);
-    }
+			if (first_row) //dopo una lettura first_row=false
+				first_row = false;
+			else //da seconda riga inserisco componenti
+				mod.add_component(id, name, qnt);
 
-    return output;
+			getline(file, reader);
+		} while (file);
+
+		// chiudo il file di indice index
+		file.close();
+
+		//inserisco nella lista modello letto
+		output.push_back(mod);
+	}
+
+	return output;
 }
 //scrolla gli ordini
 Orders ScrollOrders(list<Orders> &NewOrders)
@@ -235,9 +243,20 @@ void OrdsByMonth(list<Component> &comp, const int size)
 	delete vet;
 }
 //metodo che cerca se ci sono ordini che arrivano
-list<Orders> SearchForArrivedOrders(int ts,const list<Orders> listOrders)
-{
-	
+list<Orders> SearchForArrivedOrders(int ts, list<Orders>& listOrders) {
+	list<Orders> output;
+	int size = listOrders.size();
+	for(int i=0; i<size; i++) {
+		if(listOrders.front().get_ts() <= ts) {	//mese ordine minore di mese corrente
+			output.push_back(listOrders.front());
+			listOrders.pop_front();
+		}
+		else {
+			listOrders.push_back(listOrders.front());
+			listOrders.pop_front();
+		}
+	}
+	return output;
 }
 
 int main()
@@ -245,12 +264,17 @@ int main()
 	System sy;
 	//salvadanaio aziendale
 	Money mon{init_money};
+	int capitale = mon.getMoney();
 	//serve per indicare il modello che stiamo considerando
 	Model currentModel;
 	//lista degli ordini che si stanno processando
 	list<Orders> OrdersInProcess;
 	//lsita degli ordini da processare
 	list<Orders> OrdersToProcess;
+	//lista degli ordini pronti ad essere costruiti
+	list<Orders>OrdersReady;
+	//lista degli ordini finiti e consegnati
+	list<Orders>OrdersDone;
 	//lista di tutti gli ordini, man mano che vengono processati verranno rimossi da questa lista
 	list<Orders> NewOrders = scan_ord_file();
 	//lista contenente tutti i componenti
@@ -270,65 +294,64 @@ int main()
 	//quantita di componenti
 	int componentquantity;
 	//contatore di mesi
-	int monthcount=0;
+	int monthcount = 0;
 	//numero di ordini in arrivo
 	int ArrivingOrdersCount;
-	while (NewOrders.size > 0)
+	int ordersreadysize;
+	bool ordineOk;
+	while (NewOrders.size() > 0)
 	{
-		std::cout << "ordine 1\n";
-		OrdersInProcess.push_back(ScrollOrders(NewOrders));
-		currentModel = SearchModelById(OrdersInProcess.back().get_id(), models);
-		//ottengo i componenti che mi servono per completare il model
-		for (int i = 0; i < currentModel.get_num_c(); i++)
+		while (SearchForArrivedOrders(monthcount, NewOrders).size() > 0)
 		{
-			components.push_back(SearchComponentById(currentModel.get_c_id(i), allComponents));
-		}
-		modelquantity = OrdersInProcess.back().get_quantity();
-		componentquantity = currentModel.get_c_qnt(components.front().getComponent_id());
-		componentLength = components.size();
-		OrdsByMonth(components, componentLength);
-		for (int i = 0; i < componentLength; i++)
-		{
-			try
-			{
-				mon.buyComponent(components.front(), modelquantity * componentquantity);
-			}
-			catch (Money::notEnoughMoney)
-			{
-				std::cout << "non si dispone di abbastanza soldi per acquistare il prodotto";
-			}
+			OrdersToProcess = SearchForArrivedOrders(monthcount, NewOrders);
+			capitale += (SearchModelById(OrdersToProcess.back().get_id(), models).get_m_price * OrdersToProcess.back().get_quantity()) / 2;
 
-			sy.add_c_shop(components.front().getComponent_id, modelquantity * componentquantity, components.front().getDelivery_time());
-			sy.add_month();
-			if(SearchForArrivedOrders(monthcount,NewOrders).size()==0)
+			while (OrdersToProcess.size() > 0)
 			{
-			
+				for (int i = 0; i < SearchModelById(OrdersToProcess.back().get_id(), models).get_num_c(); i++)
+					components.push_back(SearchComponentById(SearchModelById(OrdersToProcess.back().get_id(), models).get_c_id(i), allComponents));
+				componentLength = components.size();
+				OrdsByMonth(components, componentLength);
+				for (int i = 0; i < componentLength; i++)
+				{
+					if (mon.buyComponent(components.front(), SearchModelById(OrdersToProcess.front().get_id(), models).get_c_qnt(components.front().getComponent_id()) * OrdersToProcess.front().get_quantity()))
+					{
+						sy.add_c_shop(components.front().getComponent_id, SearchModelById(OrdersToProcess.front().get_id(), models).get_c_qnt(components.front().getComponent_id()) * OrdersToProcess.front().get_quantity(), components.front().getDelivery_time - monthcount);
+						sy.add_month();
+						monthcount++;
+						components.pop_front();
+					}
+					else
+					{
+						components.push_back(components.front());
+						components.pop_front();
+					}
+				}
+				OrdersInProcess.push_back(OrdersToProcess.front());
+				OrdersToProcess.pop_front();
 			}
-			components.push_back(components.front());
-			components.pop_front();
-		}
-
-		count = 0;
-
-		//aspetto che i componenti siano tutti arrivati in magazzino
-		while (count < componentLength)
-		{
-			if (sy.catch_from_stock(components.front().getComponent_id(), modelquantity * componentquantity))
-		    {
-				count++;
-				components.push_back(components.front());
-				components.pop_front();
-			}
-			else
+			ordineOk = false;
+			for (int i = 0; i < OrdersInProcess.size(); i++)
 			{
-				sy.add_month();
+				for (int j = 0; j < SearchModelById(OrdersInProcess.front().get_id(), models).get_num_c(); j++)
+					if (sy.catch_from_stock(SearchComponentById(SearchModelById(OrdersInProcess.front().get_id(), models).get_c_id(j), allComponents).getComponent_id(), SearchModelById(OrdersInProcess.front().get_id(), models).get_c_qnt(j) * OrdersInProcess.front().get_quantity()))
+						ordineOk = true;
+			   if(ordineOk)
+			     {
+					 OrdersReady.push_back(OrdersInProcess.front());
+				 	 OrdersReady.back().set_ts(monthcount);
+					 OrdersInProcess.pop_front();
+				 }
 			}
+			ordersreadysize=OrdersReady.size();
+			for(int i=0;i<ordersreadysize;i++)
+			 if(monthcount>OrdersReady.front().get_ts())
+			  {mon.sellModel(SearchModelById(OrdersReady.front().get_id(),models),OrdersReady.front().get_quantity());
+			   sy.add_m_sold(SearchModelById( OrdersReady.front().get_id(),models).get_m_name(),OrdersReady.front().get_quantity();
+			   sy.print_current_status();
+			   OrdersReady.pop_front();
+			  }
 		}
-		//aspetto il time stamp e dopo posso dire di aver completato il primo ordine
-		sy.add_m_sold(currentModel.get_m_name(), OrdersInProcess.back().get_quantity());
-		mon.sellModel(currentModel, OrdersInProcess.back().get_quantity());
-		sy.print_current_status();
 	}
-	std::cout << "tutti gli ordini sono stati consegnati!";
 	return 0;
 }

@@ -1,0 +1,1 @@
+g++ Component.cpp Model.cpp Money.cpp System.cpp main.cpp -o progetto -O2
